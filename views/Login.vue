@@ -45,11 +45,13 @@
 <script setup>
 import { ref } from "vue";
 
+//variables
 const form = ref(false);
 const username = ref(null);
 const password = ref(null);
 const loading = ref(false);
 
+//Form Rules
 const passRules = [
   required,
   (v) => (v && v.length >= 8) || "Минимум 8 символов",
@@ -60,13 +62,14 @@ const userRules = [
     (v && v.length >= 3 && v.length <= 20) ||
     "Имя должно быть в диапазоне 3-20 симоволов",
 ];
+function required(v) {
+  return !!v || "Field is required";
+}
 
+//Button logic
 function onSubmit() {
   if (!form.value) return;
   loading.value = true;
   setTimeout(() => (loading.value = false), 2000);
-}
-function required(v) {
-  return !!v || "Field is required";
 }
 </script>
