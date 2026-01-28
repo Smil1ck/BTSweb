@@ -3,7 +3,7 @@
     <v-navigation-drawer
       permanent
       color="surface-variant"
-      :width="170"
+      :width="130"
       class="d-flex justify-start"
     >
       <v-list-item title="BTSweb" subtitle="testcase"></v-list-item>

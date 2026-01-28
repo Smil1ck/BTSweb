@@ -1,5 +1,9 @@
 <template>
-  <v-sheet class="bg-deep-black pa-12" rounded style="margin-top: 200px">
+  <v-sheet
+    class="bg-deep-black pa-12 justify-center"
+    rounded
+    style="margin-top: 200px; margin-left: 170px; scale: 1.5"
+  >
     <v-card class="mx-auto px-6 py-8" max-width="344">
       <v-form v-model="form" @submit.prevent="onSubmit">
         <v-text-field
@@ -7,8 +11,8 @@
           :readonly="loading"
           :rules="userRules"
           class="mb-2"
-          label="username"
-          placeholder="Username"
+          label="Username"
+          placeholder="Enter your username"
           clearable
         ></v-text-field>
 
