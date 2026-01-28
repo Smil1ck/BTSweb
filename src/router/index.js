@@ -1,12 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "/views/Home.vue";
 import Login from "/views/Login.vue";
-import App from "/src/App.vue";
+import WelcomePage from "/views/WelcomePage.vue";
 const routes = [
   {
     path: "/",
     name: "WelcomePage",
-    component: App,
+    component: WelcomePage,
     meta: { requiresAuth: false },
   },
 
