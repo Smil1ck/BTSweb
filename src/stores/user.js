@@ -42,6 +42,10 @@ export const useUserStore = defineStore("user", () => {
     sessionStorage.removeItem("accessToken");
   };
 
+  const SetRedirectPath = (path) => {
+    redirectPath.value = path;
+  };
+
   const login = async (credential) => {
     isLoading.value = true;
     error.value = false;
@@ -128,5 +132,6 @@ export const useUserStore = defineStore("user", () => {
     logout;
     checkAuth;
     initialize;
+    SetRedirectPath;
   }
 });
