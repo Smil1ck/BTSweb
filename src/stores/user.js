@@ -1,15 +1,15 @@
 import { ref, computed } from "vue";
 import { defineStore } from "pinia";
 import { useRouter } from "vue-router";
-import { logAPI } from "/servises/api.js";
+import { logAPI, refAPI, authAPI } from "/servises/api.js";
 
 export const useUserStore = defineStore("user", () => {
   const router = useRouter();
 
   //Variables
   const user = ref(null);
-  const refreshToken = ref(sessionStorage.getItem("refreshToken" || null));
-  const accessToken = ref(sessionStorage.getItem("accessToken" || null));
+  const refreshToken = ref(sessionStorage.getItem("refreshToken") || null);
+  const accessToken = ref(sessionStorage.getItem("accessToken") || null);
   const isLoading = ref(false);
   const error = ref(null);
   const redirectPath = ref(null);
@@ -75,9 +75,58 @@ export const useUserStore = defineStore("user", () => {
     router.push("/Login");
   };
 
-  //вероятно к реализации
-  const checkAuth = () => {};
+  //в будующем обертка для обращения к серверу
+  // types:'auth'...
+  const checkAuth = async (type) => {
+    if (!accessToken.value) {
+      return false;
+    }
 
-  const initialize = () => {};
-  return { count, doubleCount, increment };
+    try {
+      switch (type) {
+        case "auth":
+          await authAPI(accessToken.value);
+          return true;
+        default:
+          await authAPI(accessToken.value);
+          return true;
+      }
+    } catch (err) {
+      return false;
+    }
+  };
+
+  const initialize = async () => {
+    if (accessToken.value && !user.value) {
+      try {
+        const response = await authAPI(accessToken.value);
+        const { username } = response.data;
+        (user, (value = username));
+      } catch (err) {
+        ClearUserData();
+      }
+    }
+  };
+
+  return;
+  {
+    //variables
+    user;
+    refreshToken;
+    accessToken;
+    error;
+    redirectPath;
+    isLoading;
+
+    //getters
+    isLoged;
+    getUserName;
+    //fuctions
+    login;
+    setTokens;
+    ClearUserData;
+    logout;
+    checkAuth;
+    initialize;
+  }
 });
