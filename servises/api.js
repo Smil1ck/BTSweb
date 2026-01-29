@@ -24,14 +24,27 @@ export const logAPI = async (credential) => {
   return response;
 };
 
-export const refAPI = async (credential) => {
+export const refAPI = async (refreshToken) => {
   const response = await fetch(`${base_api_params.baseURL}/auth/refresh`, {
     method: base_api_params.method,
     headers: base_api_params.headers,
     body: JSON.stringify({
-      refreshToken: credential.refreshToken,
+      refreshToken: refreshToken,
       expiresInMins: base_api_params.tokenLifeTime,
     }),
+  })
+    .then((res) => res.json())
+    .then(console.log);
+
+  return response;
+};
+
+export const authAPI = async (accessToken) => {
+  const response = await fetch(`${base_api_params.baseURL}/auth/me`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer /${accessToken}/`,
+    },
   })
     .then((res) => res.json())
     .then(console.log);
