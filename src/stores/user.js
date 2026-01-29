@@ -7,6 +7,7 @@ export const useUserStore = defineStore("user", () => {
 
   //Variables
   const user = ref(null);
+  const password = ref(null);
   const refreshToken = ref(sessionStorage.getItem("refreshToken" || null));
   const accessToken = ref(sessionStorage.getItem("accessToken" || null));
   const isLoading = ref(false);
