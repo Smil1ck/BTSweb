@@ -1,6 +1,6 @@
-import { useUserStore } from "/stores/user.js";
+import { useUserStore } from "@/stores/user.js";
 
-export const routerGuard = () => {
+export const routerGuard = (router) => {
   router.beforeEach(async (to, from, next) => {
     const userStore = useUserStore();
     if (to.meta.requiresAuth === false) {

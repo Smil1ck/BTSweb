@@ -112,26 +112,24 @@ export const useUserStore = defineStore("user", () => {
     }
   };
 
-  return;
-  {
+  return {
     //variables
-    user;
-    refreshToken;
-    accessToken;
-    error;
-    redirectPath;
-    isLoading;
-
+    user,
+    refreshToken,
+    accessToken,
+    error,
+    redirectPath,
+    isLoading,
     //getters
-    isLoged;
-    getUserName;
+    isLoged,
+    getUserName,
     //fuctions
-    login;
-    setTokens;
-    ClearUserData;
-    logout;
-    checkAuth;
-    initialize;
-    SetRedirectPath;
-  }
+    login,
+    setTokens,
+    ClearUserData,
+    logout,
+    checkAuth,
+    initialize,
+    SetRedirectPath,
+  };
 });
