@@ -34,10 +34,12 @@ import { onMounted, ref, computed } from "vue";
 import { useUserStore } from "./stores/user";
 const userStore = useUserStore();
 
+//для отображения иконки лога
 const isAuth = computed(() => {
   return userStore.isLoged ? true : false;
 });
 
+//подгрузка нейма в юзерСторадж если что то лежит в сесионСторадж
 onMounted(async () => {
   console.log(userStore.accessToken);
   await userStore.initialize();

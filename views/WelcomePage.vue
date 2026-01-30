@@ -16,6 +16,7 @@ import { useUserStore } from "@/stores/user";
 const userStore = useUserStore();
 const isAuth = ref(userStore.isLoged);
 
+//Обновление имени пользователя
 const user = computed(() => {
   return userStore.getUserName;
 });

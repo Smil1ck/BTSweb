@@ -67,7 +67,7 @@ function required(v) {
   return !!v || "Field is required";
 }
 
-//Button logic
+//Button logic (Кнопка авторизации)
 async function onSubmit() {
   if (!form.value) return;
   loading.value = true;

@@ -36,6 +36,8 @@ const userStore = useUserStore();
 
 //variables
 const loading = ref(null);
+
+//Обновление имени пользователя
 const user = computed(() => {
   return userStore.getUserName;
 });
