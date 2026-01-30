@@ -112,11 +112,14 @@ export const useUserStore = defineStore("user", () => {
   const initialize = async () => {
     if (accessToken.value && !user.value) {
       try {
+        isLoading.value = true;
         const response = await authAPI(accessToken.value);
         const { username } = response;
         user.value = username;
       } catch (err) {
         logout();
+      } finally {
+        isLoading.value = false;
       }
     }
   };

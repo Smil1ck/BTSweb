@@ -2,7 +2,7 @@
   <v-container class="fill-height">
     <v-row justify="center" align="center">
       <v-col cols="12" sm="8" md="6" lg="4">
-        <v-card class="pa-6">
+        <v-card :loading="loading" class="pa-6">
           <!-- Информация о пользователе -->
           <div class="mb-8">
             <!-- User -->
@@ -35,7 +35,9 @@ import { useUserStore } from "@/stores/user";
 const userStore = useUserStore();
 
 //variables
-const loading = ref(null);
+const loading = computed(() => {
+  return userStore.isLoading;
+});
 
 //Обновление имени пользователя
 const user = computed(() => {

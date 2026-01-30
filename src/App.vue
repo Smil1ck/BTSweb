@@ -20,7 +20,14 @@
         <v-list-item link title="Login"></v-list-item>
       </router-link>
     </v-navigation-drawer>
-    <router-view></router-view>
+    <router-view v-if="loading === false"></router-view>
+    <div
+      v-else
+      class="d-flex align-center justify-center"
+      style="min-height: 100vh"
+    >
+      <v-progress-circular indeterminate color="primary"></v-progress-circular>
+    </div>
   </v-app>
 </template>
 <style scoped>
@@ -34,6 +41,8 @@ import { onMounted, ref, computed } from "vue";
 import { useUserStore } from "./stores/user";
 const userStore = useUserStore();
 
+//Для начальной загрузки из стораджа
+const loading = ref(true);
 //для отображения иконки лога
 const isAuth = computed(() => {
   return userStore.isLoged ? true : false;
@@ -43,6 +52,7 @@ const isAuth = computed(() => {
 onMounted(async () => {
   console.log(userStore.accessToken);
   await userStore.initialize();
+  loading.value = false;
 });
 //States
 </script>
