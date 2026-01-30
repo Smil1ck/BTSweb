@@ -43,18 +43,20 @@ export const refAPI = async (refreshToken) => {
   return result;
 };
 
+const authHeders = (accessToken) => {
+  return { Authorization: `Bearer ${accessToken.trim()}` };
+};
+
 export const authAPI = async (accessToken) => {
   console.log(accessToken);
   const response = await fetch(`${base_api_params.baseURL}/auth/me`, {
     method: "GET",
-    headers: {
-      Authorization: `Bearer /${accessToken}/`,
-    },
+    headers: authHeders(accessToken),
   });
   const result = await response.json();
   console.log(result);
-  if (result.message === "Invalid credentials") {
-    throw new Error("Invalid credentials");
+  if (result.message === "invalid token") {
+    throw new Error("invalid token");
   }
   return result;
 };

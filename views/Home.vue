@@ -30,14 +30,15 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useUserStore } from "@/stores/user";
 const userStore = useUserStore();
 
 //variables
-const user = ref(userStore.getUserName);
 const loading = ref(null);
-
+const user = computed(() => {
+  return userStore.getUserName;
+});
 //funcs
 const logout = () => {
   loading.value = true;

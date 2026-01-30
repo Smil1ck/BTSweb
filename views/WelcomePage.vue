@@ -11,9 +11,12 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useUserStore } from "@/stores/user";
 const userStore = useUserStore();
-const user = ref(userStore.getUserName);
 const isAuth = ref(userStore.isLoged);
+
+const user = computed(() => {
+  return userStore.getUserName;
+});
 </script>

@@ -16,12 +16,9 @@ export const useUserStore = defineStore("user", () => {
 
   //getters
   const isLoged = computed(() => {
-    console.log(accessToken.value);
     if (!accessToken.value) {
-      console.log(accessToken.value);
       return false;
     } else {
-      console.log(accessToken.value);
       return true;
     }
   });
@@ -38,6 +35,10 @@ export const useUserStore = defineStore("user", () => {
 
     sessionStorage.setItem("refreshToken", refToken);
     sessionStorage.setItem("accessToken", acsToken);
+  };
+
+  const setLoading = (value) => {
+    isLoading.value = value;
   };
 
   const ClearUserData = () => {
@@ -112,10 +113,10 @@ export const useUserStore = defineStore("user", () => {
     if (accessToken.value && !user.value) {
       try {
         const response = await authAPI(accessToken.value);
-        const { username } = response.data;
-        (user, (value = username));
+        const { username } = response;
+        user.value = username;
       } catch (err) {
-        ClearUserData();
+        logout();
       }
     }
   };
@@ -139,5 +140,6 @@ export const useUserStore = defineStore("user", () => {
     checkAuth,
     initialize,
     SetRedirectPath,
+    setLoading,
   };
 });

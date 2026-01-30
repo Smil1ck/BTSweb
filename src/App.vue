@@ -38,5 +38,9 @@ const isAuth = computed(() => {
   return userStore.isLoged ? true : false;
 });
 
+onMounted(async () => {
+  console.log(userStore.accessToken);
+  await userStore.initialize();
+});
 //States
 </script>
