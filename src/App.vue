@@ -12,7 +12,11 @@
         <v-list-item link title="Home"></v-list-item>
       </router-link>
       <v-spacer></v-spacer>
-      <router-link :to="{ name: 'Login' }" class="sidebar-link">
+      <router-link
+        v-show="!isAuth"
+        :to="{ name: 'Login' }"
+        class="sidebar-link"
+      >
         <v-list-item link title="Login"></v-list-item>
       </router-link>
     </v-navigation-drawer>
@@ -26,6 +30,13 @@
 }
 </style>
 <script setup>
-import { onMounted } from "vue";
+import { onMounted, ref, computed } from "vue";
 import { useUserStore } from "./stores/user";
+const userStore = useUserStore();
+
+const isAuth = computed(() => {
+  return userStore.isLoged ? true : false;
+});
+
+//States
 </script>
