@@ -13,15 +13,14 @@ export const logAPI = async (credential) => {
     method: base_api_params.method,
     headers: base_api_params.headers,
     body: JSON.stringify({
-      username: credential.user,
-      password: credential.password,
+      username: credential.username.value,
+      password: credential.password.value,
       expiresInMins: base_api_params.tokenLifeTime,
     }),
-  })
-    .then((res) => res.json())
-    .then(console.log);
-
-  return response;
+  });
+  const result = await response.json();
+  console.log(result);
+  return result;
 };
 
 export const refAPI = async (refreshToken) => {
@@ -32,11 +31,11 @@ export const refAPI = async (refreshToken) => {
       refreshToken: refreshToken,
       expiresInMins: base_api_params.tokenLifeTime,
     }),
-  })
-    .then((res) => res.json())
-    .then(console.log);
+  });
+  const result = await response.json();
+  console.log(result);
 
-  return response;
+  return result;
 };
 
 export const authAPI = async (accessToken) => {
@@ -45,9 +44,9 @@ export const authAPI = async (accessToken) => {
     headers: {
       Authorization: `Bearer /${accessToken}/`,
     },
-  })
-    .then((res) => res.json())
-    .then(console.log);
+  });
+  const result = await response.json();
+  console.log(result);
 
-  return response;
+  return result;
 };

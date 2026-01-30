@@ -52,7 +52,7 @@ export const useUserStore = defineStore("user", () => {
 
     try {
       const response = await logAPI(credential);
-      const { username, accessToken, refreshToken } = response.data;
+      const { username, accessToken, refreshToken } = response;
 
       //saveToken
       setTokens(accessToken, refreshToken);

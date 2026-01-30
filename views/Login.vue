@@ -44,13 +44,14 @@
 </template>
 <script setup>
 import { ref } from "vue";
+import { useUserStore } from "@/stores/user";
 
+const userStore = useUserStore();
 //variables
 const form = ref(false);
 const username = ref(null);
 const password = ref(null);
-const loading = ref(false);
-
+const loading = ref(null);
 //Form Rules
 const passRules = [
   required,
@@ -70,6 +71,13 @@ function required(v) {
 function onSubmit() {
   if (!form.value) return;
   loading.value = true;
-  setTimeout(() => (loading.value = false), 2000);
+  try {
+    userStore.login({ username, password });
+    loading.value = false;
+  } catch (err) {
+    setTimeout(() => {
+      loading.value = false;
+    }, 2000);
+  }
 }
 </script>
