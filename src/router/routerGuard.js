@@ -3,11 +3,12 @@ import { useUserStore } from "@/stores/user.js";
 export const routerGuard = (router) => {
   router.beforeEach(async (to, from, next) => {
     const userStore = useUserStore();
-    if (to.meta.requiresAuth === false) {
+    const isAuth = userStore.isLoged;
+    if (to.meta.requiresAuth === false && isAuth === false) {
       return next();
     }
 
-    const isAuth = await userStore.checkAuth();
+    console.log(isAuth);
     if (to.meta.requiresAuth && !isAuth) {
       userStore.SetRedirectPath(to.fullPath);
 

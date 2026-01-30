@@ -68,16 +68,16 @@ function required(v) {
 }
 
 //Button logic
-function onSubmit() {
+async function onSubmit() {
   if (!form.value) return;
   loading.value = true;
   try {
-    userStore.login({ username, password });
+    await userStore.login({ username, password });
     loading.value = false;
   } catch (err) {
     setTimeout(() => {
       loading.value = false;
-    }, 2000);
+    }, 1500);
   }
 }
 </script>

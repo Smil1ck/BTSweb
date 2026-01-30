@@ -16,7 +16,14 @@ export const useUserStore = defineStore("user", () => {
 
   //getters
   const isLoged = computed(() => {
-    return !!accessToken.value;
+    console.log(accessToken.value);
+    if (!accessToken.value) {
+      console.log(accessToken.value);
+      return false;
+    } else {
+      console.log(accessToken.value);
+      return true;
+    }
   });
 
   const getUserName = computed(() => {
@@ -68,6 +75,7 @@ export const useUserStore = defineStore("user", () => {
       return true;
     } catch (err) {
       error.value = "Ошибка при входе в систему";
+      throw new Error(error.value);
       return false;
     } finally {
       isLoading.value = false;

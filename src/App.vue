@@ -25,3 +25,7 @@
   text-decoration: none;
 }
 </style>
+<script setup>
+import { onMounted } from "vue";
+import { useUserStore } from "./stores/user";
+</script>

@@ -5,7 +5,7 @@ const base_api_params = {
   baseURL: BASE_API_URL,
   headers: { "Content-Type": "application/json" },
   method: "POST",
-  tokenLifeTime: 5,
+  tokenLifeTime: 30,
 };
 
 export const logAPI = async (credential) => {
@@ -13,13 +13,16 @@ export const logAPI = async (credential) => {
     method: base_api_params.method,
     headers: base_api_params.headers,
     body: JSON.stringify({
-      username: credential.username.value,
-      password: credential.password.value,
+      username: credential.username.value.trim(),
+      password: credential.password.value.trim(),
       expiresInMins: base_api_params.tokenLifeTime,
     }),
   });
   const result = await response.json();
   console.log(result);
+  if (result.message === "Invalid credentials") {
+    throw new Error("Invalid credentials");
+  }
   return result;
 };
 
@@ -34,11 +37,14 @@ export const refAPI = async (refreshToken) => {
   });
   const result = await response.json();
   console.log(result);
-
+  if (result.message === "Invalid credentials") {
+    throw new Error("Invalid credentials");
+  }
   return result;
 };
 
 export const authAPI = async (accessToken) => {
+  console.log(accessToken);
   const response = await fetch(`${base_api_params.baseURL}/auth/me`, {
     method: "GET",
     headers: {
@@ -47,6 +53,8 @@ export const authAPI = async (accessToken) => {
   });
   const result = await response.json();
   console.log(result);
-
+  if (result.message === "Invalid credentials") {
+    throw new Error("Invalid credentials");
+  }
   return result;
 };
