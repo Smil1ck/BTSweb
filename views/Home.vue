@@ -4,9 +4,14 @@
     :height="$vuetify.display.mobile ? 'calc(100vh - 56px)' : '100vh'"
     rounded
   >
-    <v-row justify="start" align="center">
-      <v-col cols="12" sm="8" md="6" lg="2">
-        <v-card :loading="loading" class="pa-6">
+    <!--карточка пользователя-->
+    <v-row justify="start" align="stretch">
+      <v-col cols="12" sm="4" md="3" lg="3">
+        <v-card
+          :loading="loading"
+          class="pa-6 fill-height"
+          style="max-height: 200px; overflow-y: auto"
+        >
           <!-- Информация о пользователе -->
           <div class="mb-8">
             <!-- User -->
@@ -31,7 +36,33 @@
           </v-btn>
         </v-card>
       </v-col>
+      <!--Параметры отображения постов-->
+      <v-col cols="12" sm="8" md="9" lg="9">
+        <v-card :loading="loading" style="max-height: 200px">
+          <div class="pt-3">
+            <!-- Params -->
+            <div class="d-block align-center ma-2 fill-height">
+              <v-text-field
+                label=""
+                prepend-icon="mdi-magnify"
+                variant="outlined"
+              ></v-text-field>
+              <v-divider :thickness="3"></v-divider>
+              <v-select
+                class="v-col-6"
+                label="Кол-во постов на странице"
+                :items="['10', '30', '50']"
+              ></v-select>
+            </div>
+          </div>
+        </v-card>
+      </v-col>
     </v-row>
+
+    <v-divider class="mt-3" :thickness="3"></v-divider>
+    <!--хедер постов -->
+    <!--карточки  постов -->
+    <!--выбор страницы -->
   </v-card>
 </template>
 
