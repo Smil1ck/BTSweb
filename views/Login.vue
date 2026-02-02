@@ -22,6 +22,7 @@
           :rules="passRules"
           label="Password"
           placeholder="Enter your password"
+          :error-messages="fieldErrors"
           clearable
         ></v-text-field>
 
@@ -43,7 +44,7 @@
   </v-sheet>
 </template>
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { useUserStore } from "@/stores/user";
 
 const userStore = useUserStore();
@@ -52,6 +53,12 @@ const form = ref(false);
 const username = ref(null);
 const password = ref(null);
 const loading = ref(null);
+const fieldErrors = ref(null);
+
+//Для изменения собственных ошибок
+watch(password, () => {
+  fieldErrors.value = null;
+});
 //Form Rules
 const passRules = [
   required,
@@ -76,6 +83,7 @@ async function onSubmit() {
     loading.value = false;
   } catch (err) {
     setTimeout(() => {
+      fieldErrors.value = "Неверное имя пользователя или пароль.";
       loading.value = false;
     }, 1500);
   }
