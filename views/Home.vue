@@ -67,7 +67,7 @@
           <div class="d-flex">
             <span>{{ item.title }}</span>
             <v-spacer></v-spacer>
-            <span>ID: {{ item.userId }}</span>
+            <span>userID: {{ item.userId }}</span>
           </div>
           <v-divider :thickness="3"></v-divider>
           <!--Тело карточки-->
