@@ -5,7 +5,7 @@ const base_api_params = {
   baseURL: BASE_API_URL,
   headers: { "Content-Type": "application/json" },
   method: "POST",
-  tokenLifeTime: 30,
+  tokenLifeTime: 5,
 };
 
 export const logAPI = async (credential) => {
