@@ -1,14 +1,20 @@
 <template>
-  <v-container class="fill-height">
+  <v-card
+    class="bg-grey-lighten-2 ma-7 pa-3"
+    :height="$vuetify.display.mobile ? 'calc(100vh - 56px)' : '100vh'"
+    rounded
+  >
     <v-row justify="start" align="center">
-      <v-col cols="12" sm="8" md="6" lg="3">
+      <v-col cols="12" sm="8" md="6" lg="2">
         <v-card :loading="loading" class="pa-6">
           <!-- Информация о пользователе -->
           <div class="mb-8">
             <!-- User -->
             <div class="d-flex align-center mb-4">
-              <span class="text-subtitle-1 font-weight-bold">User:</span>
-              <span class="text-body-1">{{ user }}</span>
+              <v-list-item
+                prepend-avatar="https://randomuser.me/api/portraits/men/85.jpg"
+                :title="user"
+              ></v-list-item>
             </div>
           </div>
 
@@ -26,7 +32,7 @@
         </v-card>
       </v-col>
     </v-row>
-  </v-container>
+  </v-card>
 </template>
 
 <script setup>
