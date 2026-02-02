@@ -1,10 +1,10 @@
 <template>
-  <v-sheet
-    class="bg-deep-black d-flex align-center justify-center"
+  <v-card
+    class="bg-grey-lighten-2 ma-10 d-flex align-center justify-center"
     :height="$vuetify.display.mobile ? 'calc(100vh - 56px)' : '100vh'"
     rounded
   >
-    <v-card style="scale: 1.5" width="400" max-width="700">
+    <v-card class="pa-2" style="scale: 1.5" width="400" max-width="700">
       <v-form v-model="form" @submit.prevent="onSubmit">
         <v-text-field
           v-model="username"
@@ -41,7 +41,7 @@
         </v-btn>
       </v-form>
     </v-card>
-  </v-sheet>
+  </v-card>
 </template>
 <script setup>
 import { ref, watch } from "vue";
