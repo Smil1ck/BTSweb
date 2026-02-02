@@ -1,10 +1,10 @@
 <template>
   <v-sheet
-    class="bg-deep-black pa-12 justify-center"
+    class="bg-deep-black d-flex align-center justify-center"
+    :height="$vuetify.display.mobile ? 'calc(100vh - 56px)' : '100vh'"
     rounded
-    style="margin-top: 200px; margin-left: 170px; scale: 1.5"
   >
-    <v-card class="mx-auto px-6 py-8" max-width="344">
+    <v-card style="scale: 1.5" width="400" max-width="700">
       <v-form v-model="form" @submit.prevent="onSubmit">
         <v-text-field
           v-model="username"

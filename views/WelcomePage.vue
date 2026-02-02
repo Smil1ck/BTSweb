@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="d-flex justify-center"
-    style="margin-top: 200px; margin-left: 130px; font-size: 40px"
-  >
+  <div class="d-flex ml-4" style="font-size: 40px">
     <h1 v-if="!isAuth">
       Welcome: {{ user }}<br />Login in your account to continue
     </h1>

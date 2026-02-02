@@ -1,12 +1,12 @@
 <template>
   <v-container class="fill-height">
-    <v-row justify="center" align="center">
-      <v-col cols="12" sm="8" md="6" lg="4">
+    <v-row justify="start" align="center">
+      <v-col cols="12" sm="8" md="6" lg="3">
         <v-card :loading="loading" class="pa-6">
           <!-- Информация о пользователе -->
           <div class="mb-8">
             <!-- User -->
-            <div class="d-flex justify-space-between align-center mb-4">
+            <div class="d-flex align-center mb-4">
               <span class="text-subtitle-1 font-weight-bold">User:</span>
               <span class="text-body-1">{{ user }}</span>
             </div>
@@ -45,8 +45,6 @@ const user = computed(() => {
 });
 //funcs
 const logout = () => {
-  loading.value = true;
   userStore.logout();
-  loading.value = false;
 };
 </script>

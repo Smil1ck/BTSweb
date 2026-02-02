@@ -1,46 +1,58 @@
 <template>
   <v-app class="d-flex">
-    <v-navigation-drawer
-      permanent
-      color="surface-variant"
-      :width="130"
-      class="d-flex justify-start"
-    >
-      <v-list-item title="BTSweb" subtitle="testcase"></v-list-item>
-      <v-divider></v-divider>
-      <router-link :to="{ name: 'Home' }" class="sidebar-link">
-        <v-list-item link title="Home"></v-list-item>
-      </router-link>
-      <v-spacer></v-spacer>
-      <router-link
-        v-show="!isAuth"
-        :to="{ name: 'Login' }"
-        class="sidebar-link"
+    <v-navigation-drawer permanent expand-on-hover rail color="wight  ">
+      <v-skeleton-loader
+        :loading="loading"
+        max-width="400"
+        type="table-heading"
       >
-        <v-list-item link title="Login"></v-list-item>
-      </router-link>
+        <v-list-item
+          prepend-avatar="https://randomuser.me/api/portraits/men/85.jpg"
+          :title="user"
+          subtitle="testcase"
+        ></v-list-item>
+      </v-skeleton-loader>
+      <v-divider></v-divider>
+
+      <v-list-item
+        prepend-icon="mdi-home"
+        :to="{ name: 'Home' }"
+        title="Home"
+      ></v-list-item>
+      <v-spacer></v-spacer>
+
+      <v-list-item
+        prepend-icon="mdi-login"
+        :to="{ name: 'Login' }"
+        v-show="!isAuth"
+        title="Login"
+      ></v-list-item>
     </v-navigation-drawer>
-    <router-view v-if="loading === false"></router-view>
-    <div
-      v-else
-      class="d-flex align-center justify-center"
-      style="min-height: 100vh"
-    >
-      <v-progress-circular indeterminate color="primary"></v-progress-circular>
-    </div>
+
+    <v-main>
+      <v-card>
+        <router-view v-if="loading === false"></router-view>
+        <div
+          v-else
+          class="d-flex align-center justify-center"
+          style="min-height: 100vh"
+        >
+          <v-progress-circular
+            indeterminate
+            color="primary"
+          ></v-progress-circular>
+        </div>
+      </v-card>
+    </v-main>
   </v-app>
 </template>
-<style scoped>
-.sidebar-link {
-  color: whitesmoke;
-  text-decoration: none;
-}
-</style>
+
 <script setup>
 import { onMounted, ref, computed } from "vue";
 import { useUserStore } from "./stores/user";
 const userStore = useUserStore();
 
+const user = computed(() => userStore.getUserName);
 //Для начальной загрузки из стораджа
 const loading = ref(true);
 //для отображения иконки лога
