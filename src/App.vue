@@ -60,7 +60,7 @@ const isAuth = computed(() => {
   return userStore.isLoged ? true : false;
 });
 
-//подгрузка нейма в юзерСторадж если что то лежит в сесионСторадж
+//подгрузка нейма в юзерСторадж и проверка на авторизацию если что то лежит в сесионСторадж
 onMounted(async () => {
   console.log(userStore.accessToken);
   await userStore.initialize();

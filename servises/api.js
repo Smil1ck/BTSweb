@@ -8,6 +8,7 @@ const base_api_params = {
   tokenLifeTime: 5,
 };
 
+//БЛОК АВТОРИЗАЦИИ-----------------------------------------------------------------------------------------------------------------
 export const logAPI = async (credential) => {
   const response = await fetch(`${base_api_params.baseURL}/auth/login`, {
     method: base_api_params.method,
@@ -60,3 +61,17 @@ export const authAPI = async (accessToken) => {
   }
   return result;
 };
+//БЛОК АВТОРИЗАЦИИ-----------------------------------------------------------------------------------------------------------------
+//БЛОК ПОСТОВ-----------------------------------------------------------------------------------------------------------------
+
+export const postGetAPI = async (currentPage, maxPosts) => {
+  const selectParams = "title,reactions,userId,body";
+  const response = await fetch(
+    `https://dummyjson.com/posts?limit=${maxPosts}&skip=${(currentPage - 1) * 10}&select=${selectParams}`,
+  );
+  const result = await response.json();
+  console.log(result);
+  return result;
+};
+
+//БЛОК ПОСТОВ-----------------------------------------------------------------------------------------------------------------
