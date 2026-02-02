@@ -124,19 +124,15 @@ export const useUserStore = defineStore("user", () => {
     if (accessToken.value && !user.value) {
       try {
         isLoading.value = true;
-        const response = await authAPI(accessToken.value);
+        let response = await authAPI(accessToken.value);
         if (response.message === "Token Expired!") {
           await refreshTokens(refreshToken.value);
-          //         console.log("im here 1");
-          const response2 = await authAPI(accessToken.value);
-          const { username } = response2;
-          user.value = username;
-          //          console.log("im here 2");
-        } else {
-          //          console.log("im here 3");
-          const { username } = response;
-          user.value = username;
+          // console.log("im here 1");
+          response = await authAPI(accessToken.value);
         }
+        // console.log("im here 3");
+        const { username } = response;
+        user.value = username;
       } catch (err) {
         //       console.log("im here");
         logout();
