@@ -1,6 +1,6 @@
 <template>
   <v-card
-    class="bg-grey-lighten-2 ma-7 pa-3"
+    class="bg-grey-lighten-2 ma-7 pa-3 d-block"
     :height="$vuetify.display.mobile ? 'calc(100vh - 56px)' : '100vh'"
     rounded
   >
@@ -60,9 +60,52 @@
     </v-row>
 
     <v-divider class="mt-3" :thickness="3"></v-divider>
-    <!--хедер постов -->
     <!--карточки  постов -->
+    <v-row justify="start" align="stretch">
+      <v-col cols="12" sm="4" md="4" lg="4">
+        <v-card class="pa-2">
+          <!--хедер для карточки-->
+          <div class="d-flex">
+            <span>Заголовок</span>
+            <v-spacer></v-spacer>
+            <span>ID:</span>
+          </div>
+          <v-divider :thickness="3"></v-divider>
+          <!--Тело карточки-->
+          <div class="mt-2 mb-2">
+            <span>текст</span>
+          </div>
+          <v-divider :thickness="3"></v-divider>
+          <!--Футер карточки-->
+          <div class="d-flex ga-10 mt-1">
+            <span>
+              <v-icon
+                color="blue-lighten-2"
+                icon="mdi-thumb-up"
+                variant="text"
+              ></v-icon>
+              :
+            </span>
+            <span>
+              <v-icon color="red" icon="mdi-thumb-down" variant="text"></v-icon>
+              :
+            </span>
+            <v-spacer></v-spacer>
+            <span>
+              <v-icon color="yellow" icon="mdi-star" variant="text"></v-icon>
+              :
+            </span>
+          </div>
+        </v-card>
+      </v-col>
+    </v-row>
+    <v-divider class="mt-3" :thickness="3"></v-divider>
     <!--выбор страницы -->
+    <v-row justify="start" align="center">
+      <v-col cols="12" sm="12" md="12" lg="12">
+        <v-pagination rounded :length="4"></v-pagination>
+      </v-col>
+    </v-row>
   </v-card>
 </template>
 
