@@ -152,7 +152,11 @@
     <!--карточки  постов -->
     <v-row justify="start" align="stretch">
       <v-col v-for="item in filteredPosts" cols="12" sm="6" md="6" lg="6">
-        <v-card :loading="loadingPage" class="pa-2">
+        <v-card
+          @click="openPostInNewTab(item.id)"
+          :loading="loadingPage"
+          class="pa-2"
+        >
           <!--хедер для карточки-->
           <div class="d-flex">
             <span>{{ item.title }}</span>
@@ -208,8 +212,18 @@
 import { ref, computed, onMounted, watch } from "vue";
 import { useUserStore } from "@/stores/user";
 import { initPage, getNewPages } from "/servises/funcHome.js";
+import { useRouter } from "vue-router";
 const userStore = useUserStore();
+const router = useRouter();
 
+//Open card in a new Tab
+const openPostInNewTab = (postId) => {
+  const route = router.resolve({
+    name: "postDetails",
+    params: { id: postId },
+  });
+  window.open(route.href, "_blank");
+};
 //variables and funcs for filters------------------------------------
 
 const likesRange = ref([0, 0]);

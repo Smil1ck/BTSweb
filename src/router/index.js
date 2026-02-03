@@ -3,6 +3,7 @@ import { routerGuard } from "@/router/routerGuard.js";
 import Home from "/views/Home.vue";
 import Login from "/views/Login.vue";
 import WelcomePage from "/views/WelcomePage.vue";
+import postDetails from "/views/postDetails.vue";
 const routes = [
   {
     path: "/",
@@ -23,6 +24,13 @@ const routes = [
     name: "Login",
     component: Login,
     meta: { requiresAuth: false },
+  },
+
+  {
+    path: "/post/:id",
+    component: postDetails,
+    name: "postDetails",
+    meta: { requiresAuth: true },
   },
 ];
 
