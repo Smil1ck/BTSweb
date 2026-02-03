@@ -40,7 +40,6 @@
             <div class="d-block align-center ma-2 fill-height">
               <v-text-field
                 v-model="searchForm"
-                label=""
                 prepend-icon="mdi-magnify"
                 variant="outlined"
               ></v-text-field>
@@ -61,7 +60,7 @@
     <v-divider class="mt-3" :thickness="3"></v-divider>
     <!--карточки  постов -->
     <v-row justify="start" align="stretch">
-      <v-col v-for="item in posts.posts" cols="12" sm="6" md="6" lg="6">
+      <v-col v-for="item in filteredPosts" cols="12" sm="6" md="6" lg="6">
         <v-card :loading="loadingPage" class="pa-2">
           <!--хедер для карточки-->
           <div class="d-flex">
@@ -138,11 +137,27 @@ const logout = () => {
 const page = ref(1);
 const maxPosts = ref(10);
 const posts = ref(JSON.parse(localStorage.getItem("postsData")));
-const searchForm = ref("");
 const loadingPage = ref(false);
 const disabled = ref(false);
 const pageLenght = ref(4);
+//для поиска
+const searchForm = ref("");
+const debouncedSearch = ref("");
+let timeoutId = null;
+const filteredPosts = computed(() => {
+  if (!debouncedSearch.value) {
+    return posts.value.posts;
+  }
 
+  const check = debouncedSearch.value.toLowerCase().trim();
+  return posts.value.posts.filter((post) => {
+    return (
+      post.title?.toLowerCase().includes(check) ||
+      post.body?.toLowerCase().includes(check) ||
+      String(post.userId).includes(check)
+    );
+  });
+});
 //Начальная загрузка
 onMounted(async () => {
   loadingPage.value = true;
@@ -153,7 +168,7 @@ onMounted(async () => {
   setTimeout((loadingPage.value = false), 1500);
 });
 
-//при любом изменении поля страницы или кол-во постов обновление локал стораджа и самих постов
+//при любом изменении поля страницы или кол-во постов обновление локал стораджа и самих постов + пагинация
 watch([page, maxPosts], async () => {
   loadingPage.value = true;
   disabled.value = true;
@@ -165,6 +180,14 @@ watch([page, maxPosts], async () => {
     disabled.value = false;
   }, 1500);
 });
+//debounce для поиска
+watch(searchForm, (newValue) => {
+  clearTimeout(timeoutId);
+  timeoutId = setTimeout(() => {
+    debouncedSearch.value = newValue;
+  }, 300);
+});
+
 //вспомогательные функции
 const fixedString = (str) => {
   return str?.length > 100 ? str.slice(0, 100) + "..." : str;
