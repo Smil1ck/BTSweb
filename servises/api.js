@@ -65,7 +65,7 @@ export const authAPI = async (accessToken) => {
 //БЛОК ПОСТОВ-----------------------------------------------------------------------------------------------------------------
 
 export const postGetAPI = async (currentPage, maxPosts) => {
-  const selectParams = "title,reactions,userId,body";
+  const selectParams = "title,reactions,userId,body,tags";
   const response = await fetch(
     `https://dummyjson.com/posts?limit=${maxPosts}&skip=${(currentPage - 1) * 10}&select=${selectParams}`,
   );
@@ -74,4 +74,25 @@ export const postGetAPI = async (currentPage, maxPosts) => {
   return result;
 };
 
-//БЛОК ПОСТОВ-----------------------------------------------------------------------------------------------------------------
+//БЛОК ПОСТОВ Для детального просмотра-----------------------------------------------------------------------------------------------------------------
+
+//get a single post
+export const getSinglePost = async (postId) => {
+  const response = await fetch(`https://dummyjson.com/posts/${postId}`);
+  const result = await response.json();
+  return result;
+};
+//get author
+export const getAuthor = async (userId) => {
+  const response = await fetch(`https://dummyjson.com/users/${userId}`);
+  const result = await response.json();
+  return result;
+};
+//getComms
+export const getComms = async (postId) => {
+  const response = await fetch(
+    `https://dummyjson.com/posts/${postId}/comments`,
+  );
+  const result = await response.json();
+  return result;
+};
