@@ -39,6 +39,7 @@
             <!-- Params -->
             <div class="d-block align-center ma-2 fill-height">
               <v-text-field
+                :disabled
                 v-model="searchForm"
                 prepend-icon="mdi-magnify"
                 variant="outlined"
@@ -59,7 +60,12 @@
                   <!--Likes-->
                   <v-menu open-on-hover :close-on-content-click="false">
                     <template v-slot:activator="{ props }">
-                      <v-btn color="primary" rounded="xl" v-bind="props">
+                      <v-btn
+                        :disabled
+                        color="primary"
+                        rounded="xl"
+                        v-bind="props"
+                      >
                         Likes Filter
                       </v-btn>
                     </template>
@@ -91,7 +97,12 @@
                   <!--DisLikes-->
                   <v-menu open-on-hover :close-on-content-click="false">
                     <template v-slot:activator="{ props }">
-                      <v-btn color="primary" rounded="xl" v-bind="props">
+                      <v-btn
+                        :disabled
+                        color="primary"
+                        rounded="xl"
+                        v-bind="props"
+                      >
                         DisLikes Filter
                       </v-btn>
                     </template>
@@ -121,7 +132,12 @@
                     </v-sheet>
                   </v-menu>
                   <!--Button Clear Filters-->
-                  <v-btn rounded="xl" color="red" @click="clearFilters">
+                  <v-btn
+                    :disabled
+                    rounded="xl"
+                    color="red"
+                    @click="clearFilters"
+                  >
                     Clear Filters
                   </v-btn>
                 </div>
