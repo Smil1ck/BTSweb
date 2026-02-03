@@ -31,7 +31,10 @@
 
     <v-main>
       <v-card>
-        <router-view v-if="loading === false"></router-view>
+        <router-view
+          v-if="loading === false"
+          :key="$route.fullPath"
+        ></router-view>
         <div
           v-else
           class="d-flex align-center justify-center"
