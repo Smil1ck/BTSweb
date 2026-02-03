@@ -42,6 +42,7 @@
                 v-model="searchForm"
                 prepend-icon="mdi-magnify"
                 variant="outlined"
+                clearable
               ></v-text-field>
               <v-divider :thickness="3"></v-divider>
               <!--Параметры страницы и фильтры-->
@@ -66,6 +67,8 @@
                       class="d-inline-flex pa-3 align-center ga-2 justify-center"
                     >
                       <v-text-field
+                        :width="200"
+                        label="от"
                         v-model="likesRange[0]"
                         variant="outlined"
                         placeholder="от"
@@ -75,6 +78,7 @@
                         :max="likesRange[1]"
                       ></v-text-field>
                       <v-text-field
+                        label="до"
                         v-model="likesRange[1]"
                         variant="outlined"
                         placeholder="до"
@@ -95,6 +99,8 @@
                       class="d-inline-flex pa-3 align-center ga-2 justify-center"
                     >
                       <v-text-field
+                        label="от"
+                        :width="200"
                         v-model="dislikesRange[0]"
                         variant="outlined"
                         placeholder="от"
@@ -104,6 +110,7 @@
                         :max="dislikesRange[1]"
                       ></v-text-field>
                       <v-text-field
+                        label="до"
                         v-model="dislikesRange[1]"
                         variant="outlined"
                         placeholder="до"
@@ -196,6 +203,10 @@ function clearFilters() {
   likesRange.value = [0, 0];
   dislikesRange.value = [0, 0];
 }
+
+function activeFilter(num) {
+  return !num || num === "0" ? false : true;
+}
 //variables------------------------------------------------------------------------
 const loading = computed(() => {
   return userStore.isLoading;
@@ -222,18 +233,43 @@ const searchForm = ref("");
 const debouncedSearch = ref("");
 let timeoutId = null;
 const filteredPosts = computed(() => {
-  if (!debouncedSearch.value) {
+  //Часть с поиском
+  if (
+    !debouncedSearch.value &&
+    !activeFilter(likesRange.value[1]) &&
+    !activeFilter(dislikesRange.value[1])
+  ) {
     return posts.value.posts;
   }
 
   const check = debouncedSearch.value.toLowerCase().trim();
-  return posts.value.posts.filter((post) => {
+  let result = posts.value.posts.filter((post) => {
     return (
       post.title?.toLowerCase().includes(check) ||
       post.body?.toLowerCase().includes(check) ||
       String(post.userId).includes(check)
     );
   });
+  //Часть с фильтрами
+  //likes
+  if (activeFilter(likesRange.value[1])) {
+    result = result.filter((post) => {
+      return (
+        post.reactions.likes >= likesRange.value[0] &&
+        post.reactions.likes <= likesRange.value[1]
+      );
+    });
+  }
+  //dislikes
+  if (activeFilter(dislikesRange.value[1])) {
+    result = result.filter((post) => {
+      return (
+        post.reactions.dislikes >= dislikesRange.value[0] &&
+        post.reactions.dislikes <= dislikesRange.value[1]
+      );
+    });
+  }
+  return result;
 });
 //Начальная загрузка------------------------------------------------------------------------
 onMounted(async () => {
