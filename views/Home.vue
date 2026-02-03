@@ -44,13 +44,81 @@
                 variant="outlined"
               ></v-text-field>
               <v-divider :thickness="3"></v-divider>
-              <v-select
-                :disabled
-                v-model="maxPosts"
-                class="v-col-6"
-                label="Кол-во постов на странице"
-                :items="['10', '20', '50']"
-              ></v-select>
+              <!--Параметры страницы и фильтры-->
+              <div class="d-flex">
+                <v-select
+                  :disabled
+                  v-model="maxPosts"
+                  class="v-col-6"
+                  label="Кол-во постов на странице"
+                  :items="['10', '20', '50']"
+                ></v-select>
+                <!--Filters-->
+                <div class="d-flex v-col-6 align-center mb-4 ga-3">
+                  <!--Likes-->
+                  <v-menu open-on-hover :close-on-content-click="false">
+                    <template v-slot:activator="{ props }">
+                      <v-btn color="primary" rounded="xl" v-bind="props">
+                        Likes Filter
+                      </v-btn>
+                    </template>
+                    <v-sheet
+                      class="d-inline-flex pa-3 align-center ga-2 justify-center"
+                    >
+                      <v-text-field
+                        v-model="likesRange[0]"
+                        variant="outlined"
+                        placeholder="от"
+                        rounded="xl"
+                        type="number"
+                        :min="0"
+                        :max="likesRange[1]"
+                      ></v-text-field>
+                      <v-text-field
+                        v-model="likesRange[1]"
+                        variant="outlined"
+                        placeholder="до"
+                        rounded="xl"
+                        type="number"
+                        :min="likesRange[0]"
+                      ></v-text-field>
+                    </v-sheet>
+                  </v-menu>
+                  <!--DisLikes-->
+                  <v-menu open-on-hover :close-on-content-click="false">
+                    <template v-slot:activator="{ props }">
+                      <v-btn color="primary" rounded="xl" v-bind="props">
+                        DisLikes Filter
+                      </v-btn>
+                    </template>
+                    <v-sheet
+                      class="d-inline-flex pa-3 align-center ga-2 justify-center"
+                    >
+                      <v-text-field
+                        v-model="dislikesRange[0]"
+                        variant="outlined"
+                        placeholder="от"
+                        rounded="xl"
+                        type="number"
+                        :min="0"
+                        :max="dislikesRange[1]"
+                      ></v-text-field>
+                      <v-text-field
+                        v-model="dislikesRange[1]"
+                        variant="outlined"
+                        placeholder="до"
+                        rounded="xl"
+                        type="number"
+                        :min="dislikesRange[0]"
+                      ></v-text-field>
+                    </v-sheet>
+                  </v-menu>
+                  <!--Button Clear Filters-->
+                  <v-btn rounded="xl" color="red" @click="clearFilters">
+                    Clear Filters
+                  </v-btn>
+                </div>
+              </div>
             </div>
           </div>
         </v-card>
@@ -119,28 +187,37 @@ import { useUserStore } from "@/stores/user";
 import { initPage, getNewPages } from "/servises/funcHome.js";
 const userStore = useUserStore();
 
-//variables
+//variables and funcs for filters------------------------------------
+
+const likesRange = ref([0, 0]);
+const dislikesRange = ref([0, 0]);
+
+function clearFilters() {
+  likesRange.value = [0, 0];
+  dislikesRange.value = [0, 0];
+}
+//variables------------------------------------------------------------------------
 const loading = computed(() => {
   return userStore.isLoading;
 });
 
-//Обновление имени пользователя
+//Обновление имени пользователя------------------------------------------------------------------------
 const user = computed(() => {
   return userStore.getUserName;
 });
-//funcs
+//funcs------------------------------------------------------------------------
 const logout = () => {
   userStore.logout();
 };
 
-//Работа с постами
+//Работа с постами------------------------------------------------------------------------
 const page = ref(1);
 const maxPosts = ref(10);
 const posts = ref(JSON.parse(localStorage.getItem("postsData")));
 const loadingPage = ref(false);
 const disabled = ref(false);
 const pageLenght = ref(4);
-//для поиска
+//для поиска------------------------------------------------------------------------
 const searchForm = ref("");
 const debouncedSearch = ref("");
 let timeoutId = null;
@@ -158,7 +235,7 @@ const filteredPosts = computed(() => {
     );
   });
 });
-//Начальная загрузка
+//Начальная загрузка------------------------------------------------------------------------
 onMounted(async () => {
   loadingPage.value = true;
   await initPage(page.value, maxPosts.value);
@@ -168,7 +245,7 @@ onMounted(async () => {
   setTimeout((loadingPage.value = false), 1500);
 });
 
-//при любом изменении поля страницы или кол-во постов обновление локал стораджа и самих постов + пагинация
+//при любом изменении поля страницы или кол-во постов обновление локал стораджа и самих постов + пагинация------------------------------------
 watch([page, maxPosts], async () => {
   loadingPage.value = true;
   disabled.value = true;
@@ -180,7 +257,7 @@ watch([page, maxPosts], async () => {
     disabled.value = false;
   }, 1500);
 });
-//debounce для поиска
+//debounce для поиска------------------------------------------------------------------------
 watch(searchForm, (newValue) => {
   clearTimeout(timeoutId);
   timeoutId = setTimeout(() => {
@@ -188,7 +265,7 @@ watch(searchForm, (newValue) => {
   }, 300);
 });
 
-//вспомогательные функции
+//вспомогательные функции------------------------------------------------------------------------
 const fixedString = (str) => {
   return str?.length > 100 ? str.slice(0, 100) + "..." : str;
 };
