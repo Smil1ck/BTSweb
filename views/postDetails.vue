@@ -21,11 +21,11 @@
       <span>Об Авторе :</span>
       <v-divider class="mb-3" :opacity="75"></v-divider>
       <div class="mt-1 mb-1">
-        <span>ФИО : {{ author.firstName }} {{ author.lastName }}</span>
+        <span>ФИО : {{ author?.firstName }} {{ author?.lastName }}</span>
         <br />
-        <span>Должность : {{ author.company.title }}</span>
+        <span>Должность : {{ author?.company.title }}</span>
         <br />
-        <span>Отдел : {{ author.company.department }}</span>
+        <span>Отдел : {{ author?.company.department }}</span>
       </div>
     </v-card>
     <!--Comments-->
