@@ -2,32 +2,81 @@
   <!--PostDetails-->
   <v-sheet class="d-block ma-3 pa-3">
     <!--info about post-->
-    <v-card :loading="loading" class="pa-2 mb-4 d-block v-col-7">
-      <span class="">{{ currentPost.title }}</span>
+    <v-card
+      :class="{ 'bg-indigo-darken-1': EditorMode }"
+      :loading="loading"
+      class="pa-2 mb-4 d-block v-col-7"
+    >
+      <v-text-field
+        variant="plain"
+        :readonly="!EditorMode"
+        v-model="currentPost.title"
+      >
+      </v-text-field>
+      <v-divider class="mb-3" :opacity="75"></v-divider>
       <v-textarea
         class="mt-3"
-        :readonly="true"
+        :readonly="!EditorMode"
         v-model="currentPost.body"
       ></v-textarea>
       <v-divider class="mb-3" :opacity="75"></v-divider>
       <div>
-        <v-chip color="green" v-for="item in currentPost.tags">
+        <v-chip
+          :closable="EditorMode"
+          close-icon="mdi-delete"
+          color="green"
+          v-for="item in currentPost.tags"
+        >
           {{ item }}
         </v-chip>
       </div>
     </v-card>
     <!--Author informmation-->
-    <v-card :loading="loading" class="pa-2 mb-4 d-block v-col-3">
-      <span>Об Авторе :</span>
-      <v-divider class="mb-3" :opacity="75"></v-divider>
-      <div class="mt-1 mb-1">
-        <span>ФИО : {{ author?.firstName }} {{ author?.lastName }}</span>
-        <br />
-        <span>Должность : {{ author?.company.title }}</span>
-        <br />
-        <span>Отдел : {{ author?.company.department }}</span>
+    <div class="d-flex">
+      <v-card :loading="loading" class="pa-2 mb-4 d-block v-col-3">
+        <span>Об Авторе :</span>
+        <v-divider class="mb-3" :opacity="75"></v-divider>
+        <div class="mt-1 mb-1">
+          <span>ФИО : {{ author?.firstName }} {{ author?.lastName }}</span>
+          <br />
+          <span>Должность : {{ author?.company.title }}</span>
+          <br />
+          <span>Отдел : {{ author?.company.department }}</span>
+        </div>
+      </v-card>
+      <!--EditorMode buttons-->
+      <div class="ml-3">
+        <v-btn
+          v-if="!EditorMode"
+          class="text-none text-subtitle-1"
+          color="#5865f2"
+          size="small"
+          variant="flat"
+          @click="enableEdit"
+        >
+          Режим редактирования
+        </v-btn>
+        <div v-else class="d-flex ga-3">
+          <v-btn
+            class="text-none text-subtitle-1"
+            color="green"
+            size="small"
+            variant="flat"
+          >
+            Сохранить
+          </v-btn>
+          <v-btn
+            class="text-none text-subtitle-1"
+            color="red"
+            size="small"
+            variant="flat"
+            @click="cancelEdit"
+          >
+            Отмена
+          </v-btn>
+        </div>
       </div>
-    </v-card>
+    </div>
     <!--Comments-->
     <v-expansion-panels class="v-col-3 mb-4">
       <v-expansion-panel>
@@ -71,6 +120,17 @@ const author = ref(null);
 const comms = ref(null);
 const allPosts = ref(JSON.parse(localStorage.getItem("postsData")) || null);
 const currentPost = ref(null);
+
+//для редактирования
+const currentPostCopy = ref(null);
+const EditorMode = ref(false);
+
+function enableEdit() {
+  EditorMode.value = true;
+}
+function cancelEdit() {
+  EditorMode.value = false;
+}
 //функция проверки локал стораджа
 function checkStorage(arr) {
   if (!arr) {
@@ -98,14 +158,17 @@ onBeforeMount(async () => {
   } else {
     currentPost.value = check[0];
   }
+  //глубокое копирование(будет использоваться в режиме редактирования )
+  currentPostCopy.value = JSON.parse(JSON.stringify(currentPost.value));
   //обновляем переменные
   author.value = await getUser(currentPost.value.userId);
   comms.value = await getComments(route.params.id);
   //обновляем переменные
-  console.log(author.value.firstName);
+  console.log(currentPostCopy.value);
   setTimeout((loading.value = false), 1500);
 });
 
+//Кнопка возврата
 const goBack = () => {
   if (window.opener) {
     window.close();
