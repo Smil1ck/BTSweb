@@ -68,6 +68,7 @@
             size="small"
             variant="flat"
             :disabled="!canBeSaved"
+            @click="saveChanges"
           >
             Сохранить
           </v-btn>
@@ -118,7 +119,12 @@
 <script setup>
 import { ref, computed, onBeforeMount, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { getPost, getComments, getUser } from "/servises/FuncsPostDetails.js";
+import {
+  getPost,
+  getComments,
+  getUser,
+  updatePost,
+} from "/servises/FuncsPostDetails.js";
 const route = useRoute();
 const router = useRouter();
 const loading = ref(false);
@@ -133,8 +139,18 @@ const currentPostCopy = ref(null);
 const EditorMode = ref(false);
 
 let timeoutId = null;
-const canBeSaved = ref(false);
 const changedFields = ref(null);
+const canBeSaved = computed(() => {
+  if (
+    changedFields.value.title ||
+    changedFields.value.body ||
+    changedFields.value.tags
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+});
 //вотчер для дебаунса проверок на изменение полей, чтобы не начинать проверку  при любом изменении
 watch(
   currentPost,
@@ -178,6 +194,31 @@ function enableEdit() {
 function cancelEdit() {
   EditorMode.value = false;
 }
+const saveChanges = async () => {
+  //сохрфнение измений, при успехе вывод сообщения и выход из режима редактирования с обновлением локал стораджа
+  //в случае неудачи - уведомление об ошибке и продолженеие работы в режиме редактирования
+  loading.value = true;
+  let changes = {};
+  if (changedFields.value.title) {
+    changes.title = currentPost.value.title;
+  }
+  if (changedFields.value.body) {
+    changes.body = currentPost.value.body;
+  }
+  if (changedFields.value.tags) {
+    changes.tags = currentPost.value.tags;
+  }
+  console.log(changes);
+  changes = JSON.stringify(changes);
+  let response = await updatePost(changes, route.params.id);
+  console.log(response[0]);
+  if (response[0] === true) {
+    EditorMode.value = false;
+  } else {
+    EditorMode.value = true;
+  }
+  loading.value = false;
+};
 //правила для полей
 const textRules = [required, (v) => v.length >= 5 || "Минимум 5 символов"];
 function required(v) {

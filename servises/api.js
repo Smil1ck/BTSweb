@@ -67,7 +67,7 @@ export const authAPI = async (accessToken) => {
 export const postGetAPI = async (currentPage, maxPosts) => {
   const selectParams = "title,reactions,userId,body,tags";
   const response = await fetch(
-    `https://dummyjson.com/posts?limit=${maxPosts}&skip=${(currentPage - 1) * 10}&select=${selectParams}`,
+    `${base_api_params.baseURL}/posts?limit=${maxPosts}&skip=${(currentPage - 1) * 10}&select=${selectParams}`,
   );
   const result = await response.json();
   console.log(result);
@@ -78,21 +78,37 @@ export const postGetAPI = async (currentPage, maxPosts) => {
 
 //get a single post
 export const getSinglePost = async (postId) => {
-  const response = await fetch(`https://dummyjson.com/posts/${postId}`);
+  const response = await fetch(`${base_api_params.baseURL}/posts/${postId}`);
   const result = await response.json();
   return result;
 };
 //get author
 export const getAuthor = async (userId) => {
-  const response = await fetch(`https://dummyjson.com/users/${userId}`);
+  const response = await fetch(`${base_api_params.baseURL}/users/${userId}`);
   const result = await response.json();
   return result;
 };
 //getComms
 export const getComms = async (postId) => {
   const response = await fetch(
-    `https://dummyjson.com/posts/${postId}/comments`,
+    `${base_api_params.baseURL}/posts/${postId}/comments`,
   );
   const result = await response.json();
+  return result;
+};
+//updatePost
+export const updatePostAPI = async (changes, postId, accessToken) => {
+  const response = await fetch(`${base_api_params.baseURL}/posts/${postId}`, {
+    method: "PUT" /* or PATCH */,
+    headers: {
+      Authorization: `Bearer ${accessToken.trim()}`,
+      "Content-Type": "application/json",
+    },
+    body: changes,
+  });
+  const result = await response.json();
+  if (result.message === "invalid token") {
+    throw new Error("invalid token");
+  }
   return result;
 };
