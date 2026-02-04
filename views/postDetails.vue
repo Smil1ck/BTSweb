@@ -8,6 +8,7 @@
       class="pa-2 mb-4 d-block v-col-7"
     >
       <v-text-field
+        :rules="textRules"
         variant="plain"
         :readonly="!EditorMode"
         v-model="currentPost.title"
@@ -15,16 +16,20 @@
       </v-text-field>
       <v-divider class="mb-3" :opacity="75"></v-divider>
       <v-textarea
+        :rules="textRules"
         class="mt-3"
         :readonly="!EditorMode"
         v-model="currentPost.body"
-      ></v-textarea>
+      >
+        ></v-textarea
+      >
       <v-divider class="mb-3" :opacity="75"></v-divider>
       <div>
         <v-chip
           :closable="EditorMode"
           close-icon="mdi-delete"
           color="green"
+          @click:close="removeTag(item)"
           v-for="item in currentPost.tags"
         >
           {{ item }}
@@ -62,6 +67,7 @@
             color="green"
             size="small"
             variant="flat"
+            :disabled="!canBeSaved"
           >
             Сохранить
           </v-btn>
@@ -110,7 +116,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onBeforeMount } from "vue";
+import { ref, computed, onBeforeMount, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { getPost, getComments, getUser } from "/servises/FuncsPostDetails.js";
 const route = useRoute();
@@ -121,16 +127,63 @@ const comms = ref(null);
 const allPosts = ref(JSON.parse(localStorage.getItem("postsData")) || null);
 const currentPost = ref(null);
 
-//для редактирования
+//для редактирования---------------------------------------------------------------------
+
 const currentPostCopy = ref(null);
 const EditorMode = ref(false);
 
+let timeoutId = null;
+const canBeSaved = ref(false);
+const changedFields = ref(null);
+//вотчер для дебаунса проверок на изменение полей, чтобы не начинать проверку  при любом изменении
+watch(
+  currentPost,
+  (newValue) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      changedFields.value = isAnyDifference(newValue);
+    }, 300);
+  },
+  { deep: true },
+);
+
+function isAnyDifference(post) {
+  let check = {
+    title: false,
+    body: false,
+    tags: false,
+  };
+
+  if (post.body !== currentPostCopy.value.body) {
+    check.body = true;
+  }
+  if (post.title !== currentPostCopy.value.title) {
+    check.title = true;
+  }
+  if (
+    JSON.stringify(post.tags) !== JSON.stringify(currentPostCopy.value.tags)
+  ) {
+    check.tags = true;
+  }
+  console.log(check);
+  return check;
+}
+//---------------------------------------------------------------------------------------------
+function removeTag(item) {
+  currentPost.value.tags = currentPost.value.tags.filter((tag) => tag !== item);
+}
 function enableEdit() {
   EditorMode.value = true;
 }
 function cancelEdit() {
   EditorMode.value = false;
 }
+//правила для полей
+const textRules = [required, (v) => v.length >= 5 || "Минимум 5 символов"];
+function required(v) {
+  return !!v || "Field is required";
+}
+//для редактирования---------------------------------------------------------------------
 //функция проверки локал стораджа
 function checkStorage(arr) {
   if (!arr) {
