@@ -179,7 +179,7 @@ watch(
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => {
       changedFields.value = isAnyDifference(newValue);
-    }, 300);
+    }, 500);
   },
   { deep: true },
 );
@@ -238,6 +238,7 @@ const saveChanges = async () => {
   console.log(response[0]);
   if (response[0] === true) {
     setTimeout(() => {
+      currentPostCopy.value = JSON.parse(JSON.stringify(currentPost.value));
       EditorMode.value = false;
       snackbarSuccess.value = true;
       loading.value = false;
