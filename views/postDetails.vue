@@ -213,6 +213,7 @@ function enableEdit() {
   EditorMode.value = true;
 }
 function cancelEdit() {
+  currentPost.value = JSON.parse(JSON.stringify(currentPostCopy.value));
   EditorMode.value = false;
 }
 const snackbarSuccess = ref(false);
