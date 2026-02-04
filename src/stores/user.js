@@ -154,6 +154,7 @@ export const useUserStore = defineStore("user", () => {
     isLoged,
     getUserName,
     //fuctions
+    refreshTokens,
     login,
     setTokens,
     ClearUserData,

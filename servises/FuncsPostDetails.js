@@ -3,6 +3,7 @@ import {
   getAuthor,
   getComms,
   updatePostAPI,
+  authAPI,
 } from "/servises/api.js";
 import { useUserStore } from "@/stores/user";
 
@@ -22,12 +23,18 @@ export const getUser = async (userId) => {
 export const updatePost = async (changes, postId) => {
   const userStore = useUserStore();
   try {
-    let response = await updatePostAPI(changes, postId, userStore.accessToken);
+    ////let response = await updatePostAPI(changes, postId, userStore.accessToken);
+    //console.log("response");
+    //console.log(response);
+    let response = await authAPI(userStore.accessToken);
     if (response.message === "Token Expired!") {
       await userStore.refreshTokens(userStore.refreshToken);
       // console.log("im here 1");
       response = await updatePostAPI(changes, postId, userStore.accessToken);
+    } else {
+      response = await updatePostAPI(changes, postId, userStore.accessToken);
     }
+
     return [true, response];
   } catch (err) {
     return [false, response];

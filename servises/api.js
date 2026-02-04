@@ -5,7 +5,7 @@ const base_api_params = {
   baseURL: BASE_API_URL,
   headers: { "Content-Type": "application/json" },
   method: "POST",
-  tokenLifeTime: 5,
+  tokenLifeTime: 1,
 };
 
 //БЛОК АВТОРИЗАЦИИ-----------------------------------------------------------------------------------------------------------------
@@ -99,7 +99,7 @@ export const getComms = async (postId) => {
 //updatePost
 export const updatePostAPI = async (changes, postId, accessToken) => {
   const response = await fetch(`${base_api_params.baseURL}/posts/${postId}`, {
-    method: "PUT" /* or PATCH */,
+    method: "PUT" /* or PATCH  PUT*/,
     headers: {
       Authorization: `Bearer ${accessToken.trim()}`,
       "Content-Type": "application/json",
