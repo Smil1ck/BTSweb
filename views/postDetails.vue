@@ -1,6 +1,25 @@
 <template>
   <!--PostDetails-->
+  <!--snackBars-->
   <v-sheet class="d-block ma-3 pa-3">
+    <v-snackbar
+      v-model="snackbarSuccess"
+      :timeout="3000"
+      class="elevation-24"
+      location="top"
+      color="green"
+    >
+      Успешно сохранено.
+    </v-snackbar>
+    <v-snackbar
+      v-model="snackbarFailue"
+      :timeout="3000"
+      class="elevation-24"
+      location="top"
+      color="red"
+    >
+      Ошибка сохранения.
+    </v-snackbar>
     <!--info about post-->
     <v-card
       :class="{ 'bg-indigo-darken-1': EditorMode }"
@@ -63,6 +82,7 @@
         </v-btn>
         <div v-else class="d-flex ga-3">
           <v-btn
+            :loading="loading"
             class="text-none text-subtitle-1"
             color="green"
             size="small"
@@ -73,6 +93,7 @@
             Сохранить
           </v-btn>
           <v-btn
+            :loading="loading"
             class="text-none text-subtitle-1"
             color="red"
             size="small"
@@ -194,6 +215,8 @@ function enableEdit() {
 function cancelEdit() {
   EditorMode.value = false;
 }
+const snackbarSuccess = ref(false);
+const snackbarFailue = ref(false);
 const saveChanges = async () => {
   //сохрфнение измений, при успехе вывод сообщения и выход из режима редактирования с обновлением локал стораджа
   //в случае неудачи - уведомление об ошибке и продолженеие работы в режиме редактирования
@@ -213,11 +236,18 @@ const saveChanges = async () => {
   let response = await updatePost(changes, route.params.id);
   console.log(response[0]);
   if (response[0] === true) {
-    EditorMode.value = false;
+    setTimeout(() => {
+      EditorMode.value = false;
+      snackbarSuccess.value = true;
+      loading.value = false;
+    }, 400);
   } else {
-    EditorMode.value = true;
+    setTimeout(() => {
+      snackbarFailue.value = true;
+      EditorMode.value = true;
+      loading.value = false;
+    }, 400);
   }
-  loading.value = false;
 };
 //правила для полей
 const textRules = [required, (v) => v.length >= 5 || "Минимум 5 символов"];
