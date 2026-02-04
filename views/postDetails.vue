@@ -239,6 +239,7 @@ const saveChanges = async () => {
   if (response[0] === true) {
     setTimeout(() => {
       currentPostCopy.value = JSON.parse(JSON.stringify(currentPost.value));
+      saveToStorage(currentPostCopy.value);
       EditorMode.value = false;
       snackbarSuccess.value = true;
       loading.value = false;
@@ -271,7 +272,14 @@ function checkStorage(arr) {
 
   return currArr ? [currArr, true] : false;
 }
-
+function saveToStorage(post) {
+  allPosts.value.posts.map((el) => {
+    if (post.id === el.id) {
+      el = post;
+    }
+  });
+  localStorage.setItem("postsData", JSON.stringify(allPosts.value));
+}
 //При инициализации странички, подтягиваем всю необходимую информацию для отображения(в зависимости от того что в лежит в локал сторадже)
 onBeforeMount(async () => {
   loading.value = true;
