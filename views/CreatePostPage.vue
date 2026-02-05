@@ -183,10 +183,12 @@ function canselEdits() {
 // Обработка поля для тегов-----------------------------------------------------------
 function addTags() {
   if (!tagList.value || tagList.value.length === 0) {
-    tagList.value = tagsfield.value.split("#").filter((item) => item !== "");
+    tagList.value = tagsfield.value
+      .split(/#|\s+/)
+      .filter((item) => item !== "");
     tagsfield.value = "";
   } else {
-    let bufList = tagsfield.value.split("#").filter((item) => item !== "");
+    let bufList = tagsfield.value.split(/#|\s+/).filter((item) => item !== "");
     tagList.value = [...new Set([...tagList.value, ...bufList])];
     tagsfield.value = "";
   }
