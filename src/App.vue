@@ -27,6 +27,14 @@
         v-show="!isAuth"
         title="Login"
       ></v-list-item>
+      <v-spacer> </v-spacer>
+
+      <v-list-item
+        prepend-icon="mdi-post"
+        :to="{ name: 'CreatePostPage' }"
+        v-show="isAuth"
+        title="New Post"
+      ></v-list-item>
     </v-navigation-drawer>
 
     <v-main>
