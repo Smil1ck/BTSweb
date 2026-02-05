@@ -112,3 +112,14 @@ export const updatePostAPI = async (changes, postId, accessToken) => {
   }
   return result;
 };
+//БЛОК СОЗДАНИЯ НОВОГО ПОСТА
+export const addPostAPI = async (data) => {
+  const response = await fetch(`${base_api_params.baseURL}/posts/add`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  const result = await response.json();
+  console.log(result);
+  return result;
+};
