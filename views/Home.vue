@@ -209,7 +209,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from "vue";
+import { ref, computed, onMounted, watch, onBeforeMount } from "vue";
 import { useUserStore } from "@/stores/user";
 import { initPage, getNewPages } from "/servises/funcHome.js";
 import { useRouter } from "vue-router";
@@ -302,7 +302,7 @@ const filteredPosts = computed(() => {
   return result;
 });
 //Начальная загрузка------------------------------------------------------------------------
-onMounted(async () => {
+onBeforeMount(async () => {
   loadingPage.value = true;
   await initPage(page.value, maxPosts.value);
   posts.value = JSON.parse(localStorage.getItem("postsData"));
