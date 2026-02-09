@@ -1,5 +1,5 @@
 <template>
-  <v-card class="bg-grey-lighten-2 ma-7 pa-3 d-block" rounded>
+  <v-card class="bg-grey-lighten-2 ma-4 pa-3 d-block" rounded>
     <!--карточка пользователя-->
     <v-row justify="start" align="stretch">
       <v-col cols="12" sm="4" md="3" lg="3">
@@ -12,7 +12,7 @@
       </v-col>
       <!--Параметры отображения постов-->
       <v-col cols="12" sm="8" md="9" lg="9">
-        <v-card :loading="loadingPage" style="max-height: 200px">
+        <v-card :loading="loadingPage" style="max-height: 400px">
           <div class="pt-3">
             <!-- Params -->
             <div class="d-block align-center ma-2 fill-height">
@@ -25,16 +25,18 @@
               ></v-text-field>
               <v-divider :thickness="3"></v-divider>
               <!--Параметры страницы и фильтры-->
-              <div class="d-flex">
+              <div class="pt-2 ga-1 d-flex flex-column flex-lg-row flex-md-row">
                 <v-select
                   :disabled
+                  :min-width="100"
                   v-model="maxPosts"
-                  class="v-col-6"
                   label="Кол-во постов на странице"
                   :items="['10', '20', '50']"
                 ></v-select>
                 <!--Filters-->
-                <div class="d-flex v-col-6 align-center mb-4 ga-3">
+                <div
+                  class="d-flex flex-column flex-md-row flex-lg-row align-center mb-4 ga-3"
+                >
                   <LikesAndDislikesFilter
                     v-model:dislikes-range="dislikesRange"
                     v-model:likes-range="likesRange"
@@ -71,7 +73,7 @@
       <v-col cols="12" sm="12" md="12" lg="12">
         <v-pagination
           :disabled
-          :total-visible="5"
+          :total-visible="$vuetify.display.mobile ? 3 : 5"
           v-model="page"
           rounded
           :length="pageLenght"

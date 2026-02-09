@@ -3,6 +3,7 @@
   <v-menu open-on-hover :close-on-content-click="false">
     <template v-slot:activator="{ props }">
       <v-btn
+        :max-width="200"
         :disabled="props.disabled"
         color="primary"
         rounded="xl"
@@ -13,7 +14,7 @@
     </template>
     <v-sheet class="d-inline-flex pa-3 align-center ga-2 justify-center">
       <v-text-field
-        :width="200"
+        :max-width="200"
         label="от"
         v-model="likesRange[0]"
         variant="outlined"
@@ -24,6 +25,7 @@
         :max="likesRange[1]"
       ></v-text-field>
       <v-text-field
+        :max-width="200"
         label="до"
         v-model="likesRange[1]"
         variant="outlined"
@@ -38,6 +40,7 @@
   <v-menu open-on-hover :close-on-content-click="false">
     <template v-slot:activator="{ props }">
       <v-btn
+        :max-width="200"
         :disabled="props.disabled"
         color="primary"
         rounded="xl"
@@ -49,7 +52,7 @@
     <v-sheet class="d-inline-flex pa-3 align-center ga-2 justify-center">
       <v-text-field
         label="от"
-        :width="200"
+        :max-width="200"
         v-model="dislikesRange[0]"
         variant="outlined"
         placeholder="от"
