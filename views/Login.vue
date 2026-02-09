@@ -1,46 +1,61 @@
 <template>
   <v-card
-    class="bg-grey-lighten-2 ma-10 d-flex align-center justify-center"
+    class="bg-grey-lighten-2 ma-2 d-flex align-center justify-center"
     :height="$vuetify.display.mobile ? 'calc(100vh - 56px)' : '100vh'"
     rounded
   >
-    <v-card class="pa-2" style="scale: 1.5" width="400" max-width="700">
-      <v-form v-model="form" @submit.prevent="onSubmit">
-        <v-text-field
-          v-model="username"
-          :readonly="loading"
-          :rules="userRules"
-          class="mb-2"
-          label="Username"
-          placeholder="Enter your username"
-          clearable
-        ></v-text-field>
-
-        <v-text-field
-          v-model="password"
-          :readonly="loading"
-          :rules="passRules"
-          label="Password"
-          placeholder="Enter your password"
-          :error-messages="fieldErrors"
-          clearable
-        ></v-text-field>
-
-        <br />
-
-        <v-btn
-          :disabled="!form"
-          :loading="loading"
-          color="black"
-          size="large"
-          type="submit"
-          variant="elevated"
-          block
+    <v-row justify="center" align="stretch">
+      <v-col
+        class="d-flex align-center justify-center"
+        cols="12"
+        sm="10"
+        md="8"
+        lg="6"
+        xl="4"
+      >
+        <v-card
+          class="pa-2"
+          :min-width="$vuetify.display.mobile ? '90%' : '600px'"
+          :max-width="700"
         >
-          Sign In
-        </v-btn>
-      </v-form>
-    </v-card>
+          <v-form v-model="form" @submit.prevent="onSubmit">
+            <v-text-field
+              v-model="username"
+              :readonly="loading"
+              :rules="userRules"
+              class="mb-2"
+              label="Username"
+              placeholder="Enter your username"
+              clearable
+            ></v-text-field>
+
+            <v-text-field
+              v-model="password"
+              :readonly="loading"
+              :rules="passRules"
+              label="Password"
+              placeholder="Enter your password"
+              :error-messages="fieldErrors"
+              clearable
+            ></v-text-field>
+
+            <br />
+
+            <v-btn
+              :disabled="!form"
+              :loading="loading"
+              color="black"
+              size="large"
+              type="submit"
+              variant="elevated"
+              block
+            >
+              Sign In
+            </v-btn>
+          </v-form>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-card>
 </template>
 <script setup>
