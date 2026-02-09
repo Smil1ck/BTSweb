@@ -18,17 +18,15 @@
     ></about-post>
     <!--Author informmation-->
     <div class="d-flex">
-      <v-card :loading="loading" class="pa-2 mb-4 d-block v-col-3">
-        <span>Об Авторе :</span>
-        <v-divider class="mb-3" :opacity="75"></v-divider>
-        <div class="mt-1 mb-1">
-          <span>ФИО : {{ author?.firstName }} {{ author?.lastName }}</span>
-          <br />
-          <span>Должность : {{ author?.company.title }}</span>
-          <br />
-          <span>Отдел : {{ author?.company.department }}</span>
-        </div>
-      </v-card>
+      <about-author
+        v-bind="{
+          loading: loading,
+          firstName: author?.firstName,
+          lastName: author?.lastName,
+          job: author?.company.title,
+          department: author?.company.department,
+        }"
+      ></about-author>
       <!--EditorMode buttons-->
       <div class="ml-3">
         <v-btn
@@ -68,30 +66,12 @@
     </div>
     <!--Comments-->
     <v-expansion-panels class="v-col-3 mb-4">
-      <v-expansion-panel>
-        <v-expansion-panel-title>Комментарии</v-expansion-panel-title>
-        <v-expansion-panel-text class="pa-3 d-block">
-          <!--Commms cards-->
-          <v-card
-            v-for="item in comms.comments"
-            :loading="loading"
-            class="pa-3 mt-3 bg-black"
-          >
-            <span>{{ item.user.username }}</span>
-            <v-divider class="mb-3" :opacity="75"></v-divider>
-            <span>{{ item.body }}</span>
-            <v-divider class="mb-3 mt-3" :opacity="75"></v-divider>
-            <span>
-              <v-icon
-                color="blue-lighten-2"
-                icon="mdi-thumb-up"
-                variant="text"
-              ></v-icon>
-              :{{ item.likes }}
-            </span>
-          </v-card>
-        </v-expansion-panel-text>
-      </v-expansion-panel>
+      <comments-panel
+        v-bind="{
+          comments: comms?.comments,
+          loading: loading,
+        }"
+      ></comments-panel>
     </v-expansion-panels>
 
     <v-btn @click="goBack"> <- Назад к списку </v-btn>
@@ -109,6 +89,9 @@ import {
 } from "/servises/FuncsPostDetails.js";
 import snackBars from "../ViewsComps/postDetails/snackBars.vue";
 import aboutPost from "../ViewsComps/postDetails/aboutPost.vue";
+import aboutAuthor from "../ViewsComps/postDetails/aboutAuthor.vue";
+import commentsPanel from "../ViewsComps/postDetails/commentsPanel.vue";
+
 const route = useRoute();
 const router = useRouter();
 const loading = ref(false);
