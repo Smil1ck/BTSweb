@@ -7,74 +7,96 @@
       v-model:snackbar-success="snackbarSuccess"
     ></snack-bars>
     <!--info about post-->
-    <about-post
-      v-model:body="currentPost.body"
-      v-model:title="currentPost.title"
-      v-model:tags="currentPost.tags"
-      v-bind="{
-        EditorMode: EditorMode,
-        loading: loading,
-      }"
-    ></about-post>
+    <v-row justify="start" align="stretch">
+      <v-col cols="12">
+        <about-post
+          v-model:body="currentPost.body"
+          v-model:title="currentPost.title"
+          v-model:tags="currentPost.tags"
+          v-bind="{
+            EditorMode: EditorMode,
+            loading: loading,
+          }"
+        ></about-post>
+      </v-col>
+    </v-row>
     <!--Author informmation-->
-    <div class="d-flex">
-      <about-author
-        v-bind="{
-          loading: loading,
-          firstName: author?.firstName,
-          lastName: author?.lastName,
-          job: author?.company.title,
-          department: author?.company.department,
-        }"
-      ></about-author>
-      <!--EditorMode buttons-->
-      <div class="ml-3">
-        <v-btn
-          v-if="!EditorMode"
-          class="text-none text-subtitle-1"
-          color="#5865f2"
-          size="small"
-          variant="flat"
-          @click="enableEdit"
-        >
-          Режим редактирования
-        </v-btn>
-        <div v-else class="d-flex ga-3">
-          <v-btn
-            :loading="loading"
-            class="text-none text-subtitle-1"
-            color="green"
-            size="small"
-            variant="flat"
-            :disabled="!canBeSaved"
-            @click="saveChanges"
-          >
-            Сохранить
-          </v-btn>
-          <v-btn
-            :loading="loading"
-            class="text-none text-subtitle-1"
-            color="red"
-            size="small"
-            variant="flat"
-            @click="cancelEdit"
-          >
-            Отмена
-          </v-btn>
+    <v-row justify="start" align="stretch">
+      <v-col cols="12">
+        <div class="d-flex flex-column flex-lg-row flex-md-row">
+          <v-col cols="12" sm="12" md="6" lg="6">
+            <about-author
+              v-bind="{
+                loading: loading,
+                firstName: author?.firstName,
+                lastName: author?.lastName,
+                job: author?.company.title,
+                department: author?.company.department,
+              }"
+            ></about-author>
+          </v-col>
+          <v-col cols="12" sm="12" md="8" lg="8">
+            <!--EditorMode buttons-->
+            <div class="ml-1">
+              <v-btn
+                :width="300"
+                v-if="!EditorMode"
+                class="text-none text-subtitle-1"
+                color="#5865f2"
+                size="small"
+                variant="flat"
+                @click="enableEdit"
+              >
+                Режим редактирования
+              </v-btn>
+              <div v-else class="d-flex ga-3">
+                <v-btn
+                  :width="150"
+                  :loading="loading"
+                  class="text-none text-subtitle-1"
+                  color="green"
+                  size="small"
+                  variant="flat"
+                  :disabled="!canBeSaved"
+                  @click="saveChanges"
+                >
+                  Сохранить
+                </v-btn>
+                <v-btn
+                  :width="150"
+                  :loading="loading"
+                  class="text-none text-subtitle-1"
+                  color="red"
+                  size="small"
+                  variant="flat"
+                  @click="cancelEdit"
+                >
+                  Отмена
+                </v-btn>
+              </div>
+            </div>
+          </v-col>
         </div>
-      </div>
-    </div>
+      </v-col>
+    </v-row>
     <!--Comments-->
-    <v-expansion-panels class="v-col-3 mb-4">
-      <comments-panel
-        v-bind="{
-          comments: comms?.comments,
-          loading: loading,
-        }"
-      ></comments-panel>
-    </v-expansion-panels>
-
-    <v-btn @click="goBack"> <- Назад к списку </v-btn>
+    <v-row justify="start" align="stretch">
+      <v-col cols="12" sm="12" md="6" lg="6">
+        <v-expansion-panels class="mb-4">
+          <comments-panel
+            v-bind="{
+              comments: comms?.comments,
+              loading: loading,
+            }"
+          ></comments-panel>
+        </v-expansion-panels>
+      </v-col>
+    </v-row>
+    <v-row justify="start" align="stretch">
+      <v-col cols="12">
+        <v-btn @click="goBack"> <- Назад к списку </v-btn>
+      </v-col>
+    </v-row>
   </v-sheet>
 </template>
 

@@ -2,7 +2,7 @@
   <v-card
     :class="{ 'bg-indigo-darken-1': props.EditorMode }"
     :loading="props.loading"
-    class="pa-2 mb-4 d-block v-col-7"
+    class="pa-2 mb-4 d-block"
   >
     <v-text-field
       :rules="textRules"
