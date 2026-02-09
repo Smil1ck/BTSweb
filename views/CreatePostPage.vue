@@ -2,54 +2,60 @@
   <!--snackBars-->
   <v-sheet class="d-flex ma-3 pa-3 v-col-12 align-center justify-center">
     <!--snackBars-->
-    <v-card class="pa-2 v-col-6 bg-black">
-      <snack-bars
-        v-model:snackbar-success="success"
-        v-model:snackbar-failue="failue"
-      ></snack-bars>
+    <v-row justify="center" align="stretch">
+      <v-col cols="12">
+        <v-card class="pa-2 mr-3 bg-black">
+          <snack-bars
+            v-model:snackbar-success="success"
+            v-model:snackbar-failue="failue"
+          ></snack-bars>
 
-      <v-form v-model="formValid" @submit.prevent="submitForm">
-        <!--Header-->
-        <new-form
-          v-model:body="body"
-          v-model:tag-list="tagList"
-          v-model:title="title"
-        ></new-form>
+          <v-form v-model="formValid" @submit.prevent="submitForm">
+            <!--Header-->
+            <new-form
+              v-model:body="body"
+              v-model:tag-list="tagList"
+              v-model:title="title"
+            ></new-form>
 
-        <!--Tags addition area-->
-        <chip-add-area
-          v-model:tagsfield="tagsfield"
-          v-model:tag-list="tagList"
-        ></chip-add-area>
+            <!--Tags addition area-->
+            <chip-add-area
+              v-model:tagsfield="tagsfield"
+              v-model:tag-list="tagList"
+            ></chip-add-area>
 
-        <!--Submit buttons-->
-        <div class="d-flex ga-3 justify-center">
-          <v-btn
-            :loading="loading"
-            :disabled="!formValid"
-            class="text-none pa-1 text-subtitle-1 v-col-5"
-            color="green"
-            size="small"
-            variant="flat"
-            rounded="xl"
-            @click="submitForm"
-          >
-            Создать пост
-          </v-btn>
-          <v-btn
-            :loading="loading"
-            rounded="xl"
-            class="text-none pa-1 text-subtitle-1 v-col-5"
-            color="red"
-            size="small"
-            variant="flat"
-            @click="canselEdits"
-          >
-            Отменить изменения
-          </v-btn>
-        </div>
-      </v-form>
-    </v-card>
+            <!--Submit buttons-->
+            <div class="d-flex ga-3 justify-center">
+              <v-btn
+                :width="$vuetify.display.mobile ? 130 : 600"
+                :loading="loading"
+                :disabled="!formValid"
+                class="text-none pa-1 text-subtitle-1"
+                color="green"
+                size="small"
+                variant="flat"
+                rounded="xl"
+                @click="submitForm"
+              >
+                Создать пост
+              </v-btn>
+              <v-btn
+                :width="$vuetify.display.mobile ? 170 : 600"
+                :loading="loading"
+                rounded="xl"
+                class="text-none pa-1 text-subtitle-1"
+                color="red"
+                size="small"
+                variant="flat"
+                @click="canselEdits"
+              >
+                Отменить изменения
+              </v-btn>
+            </div>
+          </v-form>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-sheet>
 </template>
 <script setup>

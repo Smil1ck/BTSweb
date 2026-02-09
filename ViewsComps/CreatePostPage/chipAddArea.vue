@@ -9,7 +9,8 @@
     <!--submit-->
     <div class="d-flex justify-end ga-2">
       <v-btn
-        class="text-none pa-1 text-subtitle-1 v-col-2"
+        :width="$vuetify.display.mobile ? 100 : 150"
+        class="text-none pa-1 text-subtitle-1"
         color="green"
         size="small"
         variant="flat"
@@ -19,8 +20,9 @@
         Добавить
       </v-btn>
       <v-btn
+        :width="$vuetify.display.mobile ? 100 : 150"
         rounded="xl"
-        class="text-none pa-1 text-subtitle-1 v-col-2"
+        class="text-none pa-1 text-subtitle-1"
         color="red"
         size="small"
         variant="flat"
