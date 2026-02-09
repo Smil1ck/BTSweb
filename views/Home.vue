@@ -3,34 +3,12 @@
     <!--карточка пользователя-->
     <v-row justify="start" align="stretch">
       <v-col cols="12" sm="4" md="3" lg="3">
-        <v-card
-          :loading="loading"
-          class="pa-6 fill-height"
-          style="max-height: 200px; overflow-y: auto"
-        >
-          <!-- Информация о пользователе -->
-          <div class="mb-8">
-            <!-- User -->
-            <div class="d-flex align-center mb-4">
-              <v-list-item
-                prepend-avatar="https://randomuser.me/api/portraits/men/85.jpg"
-                :title="user"
-              ></v-list-item>
-            </div>
-          </div>
-
-          <!-- Кнопка выхода -->
-          <v-btn
-            @click="logout"
-            :loading="loading"
-            color="error"
-            variant="tonal"
-            prepend-icon="mdi-logout"
-            block
-          >
-            Logout
-          </v-btn>
-        </v-card>
+        <user-card
+          v-bind="{
+            username: user,
+            loading: loading,
+          }"
+        ></user-card>
       </v-col>
       <!--Параметры отображения постов-->
       <v-col cols="12" sm="8" md="9" lg="9">
@@ -57,89 +35,11 @@
                 ></v-select>
                 <!--Filters-->
                 <div class="d-flex v-col-6 align-center mb-4 ga-3">
-                  <!--Likes-->
-                  <v-menu open-on-hover :close-on-content-click="false">
-                    <template v-slot:activator="{ props }">
-                      <v-btn
-                        :disabled
-                        color="primary"
-                        rounded="xl"
-                        v-bind="props"
-                      >
-                        Likes Filter
-                      </v-btn>
-                    </template>
-                    <v-sheet
-                      class="d-inline-flex pa-3 align-center ga-2 justify-center"
-                    >
-                      <v-text-field
-                        :width="200"
-                        label="от"
-                        v-model="likesRange[0]"
-                        variant="outlined"
-                        placeholder="от"
-                        rounded="xl"
-                        type="number"
-                        :min="0"
-                        :max="likesRange[1]"
-                      ></v-text-field>
-                      <v-text-field
-                        label="до"
-                        v-model="likesRange[1]"
-                        variant="outlined"
-                        placeholder="до"
-                        rounded="xl"
-                        type="number"
-                        :min="likesRange[0]"
-                      ></v-text-field>
-                    </v-sheet>
-                  </v-menu>
-                  <!--DisLikes-->
-                  <v-menu open-on-hover :close-on-content-click="false">
-                    <template v-slot:activator="{ props }">
-                      <v-btn
-                        :disabled
-                        color="primary"
-                        rounded="xl"
-                        v-bind="props"
-                      >
-                        DisLikes Filter
-                      </v-btn>
-                    </template>
-                    <v-sheet
-                      class="d-inline-flex pa-3 align-center ga-2 justify-center"
-                    >
-                      <v-text-field
-                        label="от"
-                        :width="200"
-                        v-model="dislikesRange[0]"
-                        variant="outlined"
-                        placeholder="от"
-                        rounded="xl"
-                        type="number"
-                        :min="0"
-                        :max="dislikesRange[1]"
-                      ></v-text-field>
-                      <v-text-field
-                        label="до"
-                        v-model="dislikesRange[1]"
-                        variant="outlined"
-                        placeholder="до"
-                        rounded="xl"
-                        type="number"
-                        :min="dislikesRange[0]"
-                      ></v-text-field>
-                    </v-sheet>
-                  </v-menu>
-                  <!--Button Clear Filters-->
-                  <v-btn
+                  <LikesAndDislikesFilter
+                    v-model:dislikes-range="dislikesRange"
+                    v-model:likes-range="likesRange"
                     :disabled
-                    rounded="xl"
-                    color="red"
-                    @click="clearFilters"
-                  >
-                    Clear Filters
-                  </v-btn>
+                  ></LikesAndDislikesFilter>
                 </div>
               </div>
             </div>
@@ -152,44 +52,17 @@
     <!--карточки  постов -->
     <v-row justify="start" align="stretch">
       <v-col v-for="item in filteredPosts" cols="12" sm="6" md="6" lg="6">
-        <v-card
+        <post-cards
           @click="openPostInNewTab(item.id)"
-          :loading="loadingPage"
-          class="pa-2"
-        >
-          <!--хедер для карточки-->
-          <div class="d-flex">
-            <span>{{ item.title }}</span>
-            <v-spacer></v-spacer>
-            <span>userID: {{ item.userId }}</span>
-          </div>
-          <v-divider :thickness="3"></v-divider>
-          <!--Тело карточки-->
-          <div class="mt-2 mb-2">
-            <span>{{ fixedString(item.body) }}</span>
-          </div>
-          <v-divider :thickness="3"></v-divider>
-          <!--Футер карточки-->
-          <div class="d-flex ga-10 mt-1">
-            <span>
-              <v-icon
-                color="blue-lighten-2"
-                icon="mdi-thumb-up"
-                variant="text"
-              ></v-icon>
-              : {{ item.reactions.likes }}
-            </span>
-            <span>
-              <v-icon color="red" icon="mdi-thumb-down" variant="text"></v-icon>
-              : {{ item.reactions.dislikes }}
-            </span>
-            <v-spacer></v-spacer>
-            <span>
-              <v-icon color="yellow" icon="mdi-star" variant="text"></v-icon>
-              : {{ item.reactions.likes - item.reactions.dislikes }}
-            </span>
-          </div>
-        </v-card>
+          v-bind="{
+            title: item.title,
+            userId: item.userId,
+            body: item.body,
+            likes: item.reactions.likes,
+            dislikes: item.reactions.dislikes,
+            loading: loadingPage,
+          }"
+        ></post-cards>
       </v-col>
     </v-row>
     <v-divider class="mt-3" :thickness="3"></v-divider>
@@ -209,10 +82,13 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch, onBeforeMount } from "vue";
+import { ref, computed, watch, onBeforeMount } from "vue";
 import { useUserStore } from "@/stores/user";
 import { initPage, getNewPages } from "/servises/funcHome.js";
 import { useRouter } from "vue-router";
+import PostCards from "../ViewsComps/Home/postCards.vue";
+import LikesAndDislikesFilter from "../ViewsComps/Home/LikesAndDislikesFilter.vue";
+import userCard from "../ViewsComps/Home/userCard.vue";
 const userStore = useUserStore();
 const router = useRouter();
 
@@ -229,11 +105,6 @@ const openPostInNewTab = (postId) => {
 const likesRange = ref([0, 0]);
 const dislikesRange = ref([0, 0]);
 
-function clearFilters() {
-  likesRange.value = [0, 0];
-  dislikesRange.value = [0, 0];
-}
-
 function activeFilter(num) {
   return !num || num === "0" ? false : true;
 }
@@ -246,10 +117,6 @@ const loading = computed(() => {
 const user = computed(() => {
   return userStore.getUserName;
 });
-//funcs------------------------------------------------------------------------
-const logout = () => {
-  userStore.logout();
-};
 
 //Работа с постами------------------------------------------------------------------------
 const page = ref(1);
@@ -330,9 +197,4 @@ watch(searchForm, (newValue) => {
     debouncedSearch.value = newValue;
   }, 300);
 });
-
-//вспомогательные функции------------------------------------------------------------------------
-const fixedString = (str) => {
-  return str?.length > 100 ? str.slice(0, 100) + "..." : str;
-};
 </script>

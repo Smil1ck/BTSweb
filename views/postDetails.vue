@@ -2,59 +2,20 @@
   <!--PostDetails-->
   <!--snackBars-->
   <v-sheet class="d-block ma-3 pa-3">
-    <v-snackbar
-      v-model="snackbarSuccess"
-      :timeout="3000"
-      class="elevation-24"
-      location="top"
-      color="green"
-    >
-      Успешно сохранено.
-    </v-snackbar>
-    <v-snackbar
-      v-model="snackbarFailue"
-      :timeout="3000"
-      class="elevation-24"
-      location="top"
-      color="red"
-    >
-      Ошибка сохранения.
-    </v-snackbar>
+    <snack-bars
+      v-model:snackbar-failue="snackbarFailue"
+      v-model:snackbar-success="snackbarSuccess"
+    ></snack-bars>
     <!--info about post-->
-    <v-card
-      :class="{ 'bg-indigo-darken-1': EditorMode }"
-      :loading="loading"
-      class="pa-2 mb-4 d-block v-col-7"
-    >
-      <v-text-field
-        :rules="textRules"
-        variant="plain"
-        :readonly="!EditorMode"
-        v-model="currentPost.title"
-      >
-      </v-text-field>
-      <v-divider class="mb-3" :opacity="75"></v-divider>
-      <v-textarea
-        :rules="textRules"
-        class="mt-3"
-        :readonly="!EditorMode"
-        v-model="currentPost.body"
-      >
-        ></v-textarea
-      >
-      <v-divider class="mb-3" :opacity="75"></v-divider>
-      <div>
-        <v-chip
-          :closable="EditorMode"
-          close-icon="mdi-delete"
-          color="green"
-          @click:close="removeTag(item)"
-          v-for="item in currentPost.tags"
-        >
-          {{ item }}
-        </v-chip>
-      </div>
-    </v-card>
+    <about-post
+      v-model:body="currentPost.body"
+      v-model:title="currentPost.title"
+      v-model:tags="currentPost.tags"
+      v-bind="{
+        EditorMode: EditorMode,
+        loading: loading,
+      }"
+    ></about-post>
     <!--Author informmation-->
     <div class="d-flex">
       <v-card :loading="loading" class="pa-2 mb-4 d-block v-col-3">
@@ -146,6 +107,8 @@ import {
   getUser,
   updatePost,
 } from "/servises/FuncsPostDetails.js";
+import snackBars from "../ViewsComps/postDetails/snackBars.vue";
+import aboutPost from "../ViewsComps/postDetails/aboutPost.vue";
 const route = useRoute();
 const router = useRouter();
 const loading = ref(false);
@@ -206,9 +169,6 @@ function isAnyDifference(post) {
   return check;
 }
 //---------------------------------------------------------------------------------------------
-function removeTag(item) {
-  currentPost.value.tags = currentPost.value.tags.filter((tag) => tag !== item);
-}
 function enableEdit() {
   EditorMode.value = true;
 }
@@ -252,11 +212,6 @@ const saveChanges = async () => {
     }, 400);
   }
 };
-//правила для полей
-const textRules = [required, (v) => v.length >= 5 || "Минимум 5 символов"];
-function required(v) {
-  return !!v || "Field is required";
-}
 //для редактирования---------------------------------------------------------------------
 //функция проверки локал стораджа
 function checkStorage(arr) {
