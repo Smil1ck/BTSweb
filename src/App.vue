@@ -1,42 +1,12 @@
 <template>
   <v-app class="d-flex">
-    <v-navigation-drawer permanent expand-on-hover rail color="wight  ">
-      <v-skeleton-loader
-        :loading="loading"
-        max-width="400"
-        type="table-heading"
-      >
-        <v-list-item
-          prepend-avatar="https://randomuser.me/api/portraits/men/85.jpg"
-          :title="user"
-          subtitle="testcase"
-        ></v-list-item>
-      </v-skeleton-loader>
-      <v-divider></v-divider>
-
-      <v-list-item
-        prepend-icon="mdi-home"
-        :to="{ name: 'Home' }"
-        title="Home"
-      ></v-list-item>
-      <v-spacer></v-spacer>
-
-      <v-list-item
-        prepend-icon="mdi-login"
-        :to="{ name: 'Login' }"
-        v-show="!isAuth"
-        title="Login"
-      ></v-list-item>
-      <v-spacer> </v-spacer>
-
-      <v-list-item
-        prepend-icon="mdi-post"
-        :to="{ name: 'CreatePostPage' }"
-        v-show="isAuth"
-        title="New Post"
-      ></v-list-item>
-    </v-navigation-drawer>
-
+    <nav-bar
+      v-bind="{
+        loading: loading,
+        user: user,
+        isAuth: isAuth,
+      }"
+    ></nav-bar>
     <v-main>
       <v-card>
         <router-view
@@ -61,6 +31,7 @@
 <script setup>
 import { onMounted, ref, computed } from "vue";
 import { useUserStore } from "./stores/user";
+import NavBar from "../ViewsComps/App/NavBar.vue";
 const userStore = useUserStore();
 
 const user = computed(() => userStore.getUserName);
